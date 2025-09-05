@@ -12,10 +12,10 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em #3f46c9aa);
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  filter: drop-shadow(0 0 2em #2b2094aa);
 }
 
 @keyframes logo-spin {
@@ -38,9 +38,60 @@
 }
 
 .read-the-docs {
-  color: #888;
+  color: #cec8c8;
+}
+
+.pokemon-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 colunas de tamanhos iguais */
+  gap: 1rem; /* espaçamento entre os cards */
+  padding: 2rem;
 }
 
 .pokemon-card {
-  width: 200px;
+  background-color: #120c1e;
+  background-image: url("https://img.freepik.com/premium-vector/pixel-art-forest-scene-vector-illustration_969863-60971.jpg");
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pokemon-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.pokemon-card img {
+  width: 96px;
+  height: 96px;
+}
+
+.pokemon-card h3 {
+  margin: 0.5rem 0 0.25rem;
+  font-size: 1.2rem;
+}
+
+.pokemon-card p {  
+  margin: 0;
+  color: #000000;
+}
+
+
+.load-more-button {
+  margin: 20px auto;
+  display: block;
+  padding: 10px 20px;
+  background-color: #ffcc00;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+ 
+
+.load-more-button:hover {
+  background-color: #e6b800;
 }
