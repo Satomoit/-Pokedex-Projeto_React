@@ -10,45 +10,64 @@ function PokemonList() {
   const [limit, setLimit] = useState(20);
   const [offset, setOffset] = useState(0);
 
+   // Função assíncrona para buscar os dados
+   async function fetchPokemons(init) {
+    try {
+      // 1. Fetch da lista dos primeiros 20 pokémons
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
+      if (!response.ok) {
+        throw new Error(`Erro ao buscar lista: ${response.status}`);
+      }
+      const data = await response.json();
+      // data.results é um array de objetos { name, url }
+
+      // 2. Para cada pokémon na lista, buscar detalhes
+      const detailedPokemons = [];
+      for (const item of data.results) {
+        const res = await fetch(item.url);
+        if (!res.ok) throw new Error(`Erro ao buscar detalhes de ${item.name}`);
+        const details = await res.json();
+        // Extrair dados relevantes: id, name, types, sprite
+        detailedPokemons.push({
+          id: details.id,
+          name: details.name.charAt(0).toUpperCase() + details.name.slice(1),
+          types: details.types,  // array de tipos completo (objetos)
+          image: details.sprites.front_default
+        });
+      }
+
+      // 3. Atualizar estado com lista detalhada e marcar loading false
+      if (init){
+        setPokemonList(detailedPokemons);
+      } else {
+        setPokemonList(prev => [...prev, ...detailedPokemons]);
+      }
+      
+      setLoading(false);
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+      setLoading(false);
+    }
+  }
+
+    
+  function setCarregarMais () {
+    setOffset(prevOffset => prevOffset + limit);
+    //setOffset(offset + limit)
+    //console.log(offset);
+  }
 
   useEffect(() => {
-    // Função assíncrona para buscar os dados
-    async function fetchPokemons() {
-      try {
-        // 1. Fetch da lista dos primeiros 20 pokémons
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
-        if (!response.ok) {
-          throw new Error(`Erro ao buscar lista: ${response.status}`);
-        }
-        const data = await response.json();
-        // data.results é um array de objetos { name, url }
-
-        // 2. Para cada pokémon na lista, buscar detalhes
-        const detailedPokemons = [];
-        for (const item of data.results) {
-          const res = await fetch(item.url);
-          if (!res.ok) throw new Error(`Erro ao buscar detalhes de ${item.name}`);
-          const details = await res.json();
-          // Extrair dados relevantes: id, name, types, sprite
-          detailedPokemons.push({
-            id: details.id,
-            name: details.name.charAt(0).toUpperCase() + details.name.slice(1),
-            types: details.types,  // array de tipos completo (objetos)
-            image: details.sprites.front_default
-          });
-        }
-
-        // 3. Atualizar estado com lista detalhada e marcar loading false
-        setPokemonList(detailedPokemons);
-        setLoading(false);
-      } catch (err) {
-        console.error(err);
-        setError(err.message);
-        setLoading(false);
-      }
+    if (offset !== 0) {
+      fetchPokemons(false);
     }
+  }, [offset]);
 
-    fetchPokemons();
+  
+  useEffect(() => {
+   
+    fetchPokemons(true);
   }, []);  // [] => executa apenas na montagem do componente
 
   // Derivar a lista filtrada com base no searchTerm e/ou tipo
@@ -82,6 +101,8 @@ function PokemonList() {
           ))}
         </div>
       )}
+      <button onClick={setCarregarMais}>{
+       'Carregar Mais'}</button> 
     </div>
   );
 }
