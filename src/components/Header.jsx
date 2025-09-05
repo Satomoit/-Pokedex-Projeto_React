@@ -1,13 +1,15 @@
-import React from "react";
+import React from 'react';
 
-function Header(props) {
-  const { title, subtitle } = props
-  return(
-    <div>
-      <h1>{title}</h1>
-      <h3>{subtitle}</h3>
-    </div> 
-  )
-}
+    function Header(props) { 
+        const { title} = props;
+        const { subtitle} = props;
 
-export default Header
+        return(
+            <div className='cabeçalho'> 
+              <h1>{title}</h1>
+              <h2>{subtitle}</h2>
+            </div>
+            )
+          }
+
+          export default Header;
