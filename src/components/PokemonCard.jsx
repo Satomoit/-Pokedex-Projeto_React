@@ -1,7 +1,7 @@
 // src/components/PokemonCard.jsx
 import React, { useState } from 'react';
 
-function PokemonCard({ name, type, image }) {
+function PokemonCard({ id, name, type, image }) {
   // Define um estado local 'showInfo' para controlar exibição de detalhes
   const [showInfo, setShowInfo] = useState(false);
 
@@ -22,7 +22,10 @@ function PokemonCard({ name, type, image }) {
 
       {/* Renderização condicional do tipo: aparece somente se showInfo for true */}
       {showInfo && (
+        <div>
         <p>Tipo: {type}</p>
+        <p>Id: {id}</p>
+        </div>
       )}
     </div>
   );
